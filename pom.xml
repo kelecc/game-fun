@@ -18,6 +18,8 @@
         <module>game-fun-feign-api</module>
         <module>game-fun-gateway</module>
         <module>game-fun-service</module>
+        <module>game-fun-security</module>
+        <module>game-fun-test</module>
     </modules>
 
     <!-- 继承Spring boot工程 -->
@@ -72,11 +74,6 @@
     </properties>
 
     <dependencies>
-        <!--日志处理包-->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-log4j2</artifactId>
-        </dependency>
         <!-- lombok -->
         <dependency>
             <groupId>org.projectlombok</groupId>
