@@ -12,6 +12,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import top.kelecc.security.component.JwtAuthenticationTokenFilter;
+import top.kelecc.security.dao.UserMapper;
+import top.kelecc.security.utils.RedisCache;
 
 import javax.annotation.Resource;
 
@@ -26,7 +28,10 @@ import javax.annotation.Resource;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Resource
     private AuthenticationEntryPoint authenticationEntryPoint;
-
+    @Resource
+    private RedisCache redisCache;
+    @Resource
+    private UserMapper userMapper;
     private final String[] NOT_AUTH_PATH = {
             "/favicon.ico",
             "/service-worker.js",
@@ -59,7 +64,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(this.NOT_AUTH_PATH).anonymous()
                 // 除上面外的所有请求全部需要鉴权认证
                 .anyRequest().authenticated();
-        http.addFilterBefore(new JwtAuthenticationTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(new JwtAuthenticationTokenFilter(redisCache,userMapper), UsernamePasswordAuthenticationFilter.class);
         http.cors();
         http.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint);
     }

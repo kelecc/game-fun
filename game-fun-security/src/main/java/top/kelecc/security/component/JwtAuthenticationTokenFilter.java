@@ -8,7 +8,6 @@ import top.kelecc.security.dao.UserMapper;
 import top.kelecc.security.utils.RedisCache;
 import top.kelecc.utils.common.JwtUtil;
 
-import javax.annotation.Resource;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -22,10 +21,15 @@ import java.io.IOException;
  * @date 2023/5/17 16:41
  */
 public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
-    @Resource
+
     private RedisCache redisCache;
-    @Resource
+
     private UserMapper userMapper;
+
+    public JwtAuthenticationTokenFilter(RedisCache redisCache, UserMapper userMapper) {
+        this.redisCache = redisCache;
+        this.userMapper = userMapper;
+    }
 
     /**
      * @param httpServletRequest
