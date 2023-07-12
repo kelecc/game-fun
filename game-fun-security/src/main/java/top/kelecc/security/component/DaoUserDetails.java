@@ -52,7 +52,7 @@ public class DaoUserDetails implements UserDetails {
 
     @Override
     public String getUsername() {
-        return user.getName();
+        return user.getPhone();
     }
 
     @Override

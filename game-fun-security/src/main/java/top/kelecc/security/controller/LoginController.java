@@ -23,7 +23,7 @@ public class LoginController {
 
     @PostMapping("/login")
     public Object login(@RequestBody Map<String, String> map) {
-        return loginService.login(map.get("username"), map.get("password"));
+        return loginService.login(map.get("phone"), map.get("password"));
     }
 
     @PostMapping("/logout")

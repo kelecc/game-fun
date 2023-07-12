@@ -40,9 +40,9 @@ public class LoginServiceImpl implements LoginService {
      * @return
      */
     @Override
-    public Object login(String username, String password) {
+    public Object login(String phone, String password) {
         //认证
-        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(username, password);
+        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(phone, password);
         Authentication authenticate = null;
         try {
             authenticate = authenticationManager.authenticate(usernamePasswordAuthenticationToken);

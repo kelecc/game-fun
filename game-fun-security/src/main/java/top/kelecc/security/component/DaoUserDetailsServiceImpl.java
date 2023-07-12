@@ -24,12 +24,12 @@ public class DaoUserDetailsServiceImpl implements UserDetailsService {
     private UserMapper userMapper;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String phone) throws UsernameNotFoundException {
         QueryWrapper<ApUser> userQueryWrapper = new QueryWrapper<>();
-        userQueryWrapper.eq("name", username);
+        userQueryWrapper.eq("phone", phone);
         ApUser user = userMapper.selectOne(userQueryWrapper);
         if (Objects.isNull(user)) {
-            throw new RuntimeException("用户名或密码错误");
+            throw new RuntimeException("手机号或密码错误");
         }
         //Todo 封装用户权限
         //List<String> permissions = userMapper.selectPermissionByUserId(user.getId());
