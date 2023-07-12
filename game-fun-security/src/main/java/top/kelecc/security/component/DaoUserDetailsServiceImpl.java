@@ -29,7 +29,7 @@ public class DaoUserDetailsServiceImpl implements UserDetailsService {
         userQueryWrapper.eq("phone", phone);
         ApUser user = userMapper.selectOne(userQueryWrapper);
         if (Objects.isNull(user)) {
-            throw new RuntimeException("手机号或密码错误");
+            throw new RuntimeException("用户不存在！");
         }
         //Todo 封装用户权限
         //List<String> permissions = userMapper.selectPermissionByUserId(user.getId());

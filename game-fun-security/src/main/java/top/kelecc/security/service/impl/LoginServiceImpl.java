@@ -8,6 +8,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import top.kelecc.model.common.dtos.ResponseResult;
 import top.kelecc.model.common.enums.HttpCodeEnum;
+import top.kelecc.model.common.user.vo.UserVo;
 import top.kelecc.security.component.DaoUserDetails;
 import top.kelecc.security.dao.UserMapper;
 import top.kelecc.security.service.LoginService;
@@ -47,7 +48,7 @@ public class LoginServiceImpl implements LoginService {
         try {
             authenticate = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
         } catch (AuthenticationException e) {
-            return ResponseResult.errorResult(3, e.getMessage());
+            return ResponseResult.errorResult(HttpCodeEnum.AUTH_FAILED, e.getMessage());
         }
         DaoUserDetails userDetails = (DaoUserDetails) authenticate.getPrincipal();
         //生成jwt
@@ -56,8 +57,9 @@ public class LoginServiceImpl implements LoginService {
         //将authentication存入redis
         redisCache.setCacheObject("login:" + userId, userDetails);
         //返回token
-        HashMap<String, String> map = new HashMap<>();
+        HashMap<String, Object> map = new HashMap<>();
         map.put("token", jwt);
+        map.put("user", new UserVo(userDetails.getUser()));
         return ResponseResult.okResult(map);
     }
 
