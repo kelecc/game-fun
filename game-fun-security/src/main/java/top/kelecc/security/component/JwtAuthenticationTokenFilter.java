@@ -21,7 +21,6 @@ import java.io.IOException;
  * @description:
  * @date 2023/5/17 16:41
  */
-//@Component
 public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
     @Resource
     private RedisCache redisCache;

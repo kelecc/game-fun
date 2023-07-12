@@ -24,8 +24,6 @@ import javax.annotation.Resource;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @MapperScan("top.kelecc.security.dao")
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-//    @Resource
-//    private JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter;
     @Resource
     private AuthenticationEntryPoint authenticationEntryPoint;
 
