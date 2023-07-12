@@ -1,0 +1,12 @@
+server:
+  port: 50001
+spring:
+  application:
+    name: game-fun-gateway
+  cloud:
+    nacos:
+      server-addr: localhost:8848
+      config:
+        file-extension: yaml
+  profiles:
+    active: dev
