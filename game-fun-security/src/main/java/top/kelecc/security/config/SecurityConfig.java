@@ -28,6 +28,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Resource
     private AuthenticationEntryPoint authenticationEntryPoint;
 
+    private final String[] NOT_AUTH_PATH = {
+            "/favicon.ico",
+            "/service-worker.js",
+            "/api/v1/login",
+            "/v2/api-docs/**",
+            "/swagger-resources/**",
+            "/doc.html",
+            "/webjars/**"
+    };
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
@@ -48,7 +57,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 // 对于登录接口 允许匿名访问
-                .antMatchers("/api/v1/login").anonymous()
+                .antMatchers(this.NOT_AUTH_PATH).anonymous()
                 // 除上面外的所有请求全部需要鉴权认证
                 .anyRequest().authenticated();
         http.addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);

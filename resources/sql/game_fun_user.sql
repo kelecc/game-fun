@@ -12,7 +12,7 @@ CREATE TABLE `ap_user`
 (
     `id`                         int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
     `name`                       varchar(20) COLLATE utf8mb4_unicode_ci  DEFAULT NULL COMMENT '用户名',
-    `password`                   varchar(32) COLLATE utf8mb4_unicode_ci  DEFAULT NULL COMMENT '密码，BCryptPasswordEncoder进行密码加密',
+    `password`                   varchar(255) COLLATE utf8mb4_unicode_ci  DEFAULT NULL COMMENT '密码，BCryptPasswordEncoder进行密码加密',
     `phone`                      varchar(11) COLLATE utf8mb4_unicode_ci  DEFAULT NULL COMMENT '手机号',
     `image`                      varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '头像',
     `sex`                        tinyint(1) unsigned                     DEFAULT NULL COMMENT '0 男\r\n            1 女\r\n            2 未知',

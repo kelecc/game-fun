@@ -1,2 +1,3 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  top.kelecc.common.exception.ExceptionCatch
+  top.kelecc.common.exception.ExceptionCatch,\
+  top.kelecc.common.knife4j.Swagger2Configuration

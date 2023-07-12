@@ -1,6 +1,7 @@
 package top.kelecc.test.controller;
 
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import top.kelecc.model.common.dtos.ResponseResult;
@@ -16,14 +17,14 @@ import java.util.HashMap;
 @RestController
 @RequestMapping("/api/v1/test")
 public class TestController {
-    @RequestMapping("/hello")
+    @GetMapping("/hello")
     public ResponseResult hello() {
         HashMap<String, String> map = new HashMap<>();
         map.put("name", "kele");
         return ResponseResult.okResult(map);
     }
 
-    @RequestMapping("/hello2")
+    @GetMapping("/hello2")
     @PreAuthorize("hasAuthority('kele')")
     public ResponseResult hello2() {
         HashMap<String, String> map = new HashMap<>();

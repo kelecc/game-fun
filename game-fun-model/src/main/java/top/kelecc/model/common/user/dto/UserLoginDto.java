@@ -1,5 +1,6 @@
 package top.kelecc.model.common.user.dto;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 /**
@@ -13,10 +14,12 @@ public class UserLoginDto {
     /**
      * 密码明文
      */
+    @ApiModelProperty(value = "密码明文" ,dataType = "String",required = true)
     private String password;
 
     /**
      * 手机号
      */
+    @ApiModelProperty(value = "手机号" ,dataType = "String",required = true)
     private String phone;
 }
