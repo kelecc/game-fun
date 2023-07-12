@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -23,8 +24,8 @@ import javax.annotation.Resource;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @MapperScan("top.kelecc.security.dao")
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    @Resource
-    private JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter;
+//    @Resource
+//    private JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter;
     @Resource
     private AuthenticationEntryPoint authenticationEntryPoint;
 
@@ -60,9 +61,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(this.NOT_AUTH_PATH).anonymous()
                 // 除上面外的所有请求全部需要鉴权认证
                 .anyRequest().authenticated();
-        http.addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(new JwtAuthenticationTokenFilter(), UsernamePasswordAuthenticationFilter.class);
         http.cors();
         http.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint);
+    }
+
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        web.ignoring().antMatchers(this.NOT_AUTH_PATH);
     }
 
     @Bean

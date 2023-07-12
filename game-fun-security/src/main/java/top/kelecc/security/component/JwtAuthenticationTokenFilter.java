@@ -3,7 +3,6 @@ package top.kelecc.security.component;
 import io.jsonwebtoken.Claims;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import top.kelecc.security.dao.UserMapper;
 import top.kelecc.security.utils.RedisCache;
@@ -22,7 +21,7 @@ import java.io.IOException;
  * @description:
  * @date 2023/5/17 16:41
  */
-@Component
+//@Component
 public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
     @Resource
     private RedisCache redisCache;
