@@ -1,5 +1,7 @@
 package top.kelecc.security.service;
 
+import top.kelecc.model.common.dtos.ResponseResult;
+
 /**
  * @author 可乐
  */
@@ -11,7 +13,7 @@ public interface LoginService {
      * @param password
      * @return
      */
-    Object login(String username, String password);
+    ResponseResult login(String username, String password);
 
     Object logout();
 }

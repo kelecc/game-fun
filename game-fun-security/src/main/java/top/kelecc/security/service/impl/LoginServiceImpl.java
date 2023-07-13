@@ -36,12 +36,12 @@ public class LoginServiceImpl implements LoginService {
     /**
      * 登录
      *
-     * @param username
+     * @param phone
      * @param password
      * @return
      */
     @Override
-    public Object login(String phone, String password) {
+    public ResponseResult login(String phone, String password) {
         //认证
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(phone, password);
         Authentication authenticate = null;

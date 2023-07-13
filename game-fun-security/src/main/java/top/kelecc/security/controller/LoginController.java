@@ -24,7 +24,7 @@ import javax.annotation.Resource;
  */
 @RestController
 @RequestMapping("/api/v1/login")
-@Api(value = "登录模块",tags = "登录模块")
+@Api(value = "登录模块", tags = "登录模块")
 public class LoginController {
     @Resource
     private LoginService loginService;
@@ -32,14 +32,15 @@ public class LoginController {
     @PostMapping("/login_auth")
     @ApiOperation("登录")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "token",value = "不要带token")
+            @ApiImplicitParam(name = "token", value = "不要带token")
     })
-    public Object login(@RequestBody UserLoginDto user) {
+    public ResponseResult login(@RequestBody UserLoginDto user) {
         if (StringUtils.isNotBlank(user.getPassword()) && StringUtils.isNotBlank(user.getPhone())) {
             return loginService.login(user.getPhone(), user.getPassword());
         }
         return ResponseResult.errorResult(HttpCodeEnum.PARAM_INVALID, "手机号或者密码不能为空！");
     }
+
     @ApiOperation("登出")
     @PostMapping("/logout")
     public Object logout() {
