@@ -1,11 +1,15 @@
 package top.kelecc.common.exception;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import top.kelecc.model.common.dtos.ResponseResult;
 import top.kelecc.model.common.enums.HttpCodeEnum;
+
+import java.util.Objects;
 
 /**
  * @author 可乐
@@ -25,7 +29,6 @@ public class ExceptionCatch {
     @ExceptionHandler(Exception.class)
     @ResponseBody
     public ResponseResult exception(Exception e) {
-        e.printStackTrace();
         log.error("catch exception:{}", e.getMessage());
         return ResponseResult.errorResult(HttpCodeEnum.SERVER_ERROR);
     }
@@ -41,5 +44,19 @@ public class ExceptionCatch {
     public ResponseResult exception(CustomException e) {
         log.error("catch exception:{}", e);
         return ResponseResult.errorResult(e.getHttpCodeEnum());
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseBody
+    public ResponseResult exception(MethodArgumentNotValidException e) {
+        log.info("非法参数:{}", Objects.requireNonNull(e.getBindingResult().getFieldError()).getDefaultMessage());
+        return ResponseResult.errorResult(HttpCodeEnum.PARAM_INVALID, Objects.requireNonNull(e.getBindingResult().getFieldError()).getDefaultMessage());
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    @ResponseBody
+    public ResponseResult exception(HttpMessageNotReadableException e) {
+        log.info("RequestBody参数非法:{}", e.getMessage());
+        return ResponseResult.errorResult(HttpCodeEnum.PARAM_INVALID, "RequestBody参数非法");
     }
 }

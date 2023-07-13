@@ -8,15 +8,52 @@
     </parent>
 
     <artifactId>game-fun-service</artifactId>
-    <packaging>jar</packaging>
+    <packaging>pom</packaging>
 
     <name>game-fun-service</name>
     <url>http://www.kelecc.top</url>
+    <modules>
+        <module>game-fun-article</module>
+    </modules>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>top.kelecc</groupId>
+            <artifactId>game-fun-common</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>top.kelecc</groupId>
+            <artifactId>game-fun-model</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>top.kelecc</groupId>
+            <artifactId>game-fun-security</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>top.kelecc</groupId>
+            <artifactId>game-fun-feign-api</artifactId>
+        </dependency>
+        <!-- Spring boot starter -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+        </dependency>
     </dependencies>
 </project>

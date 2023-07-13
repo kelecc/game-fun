@@ -11,7 +11,6 @@
     <url>https://www.kelecc.top</url>
 
     <modules>
-
         <module>game-fun-common</module>
         <module>game-fun-model</module>
         <module>game-fun-utils</module>
@@ -88,6 +87,11 @@
             <!--内部依赖工程-->
             <dependency>
                 <artifactId>game-fun-feign-api</artifactId>
+                <groupId>top.kelecc</groupId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <artifactId>game-fun-security</artifactId>
                 <groupId>top.kelecc</groupId>
                 <version>${project.version}</version>
             </dependency>
