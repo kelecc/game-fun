@@ -23,13 +23,13 @@ import javax.annotation.Resource;
  * @date 2023/5/17 15:01
  */
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/login")
 @Api(value = "登录模块",tags = "登录模块")
 public class LoginController {
     @Resource
     private LoginService loginService;
 
-    @PostMapping("/login")
+    @PostMapping("/login_auth")
     @ApiOperation("登录")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "token",value = "不要带token")

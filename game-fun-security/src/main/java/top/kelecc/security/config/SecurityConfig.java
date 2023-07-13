@@ -35,7 +35,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final String[] NOT_AUTH_PATH = {
             "/favicon.ico",
             "/service-worker.js",
-            "/api/v1/login",
+            "/api/v1/login/login_auth/**",
             "/v2/api-docs/**",
             "/swagger-resources/**",
             "/doc.html",
