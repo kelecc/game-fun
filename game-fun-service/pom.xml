@@ -14,6 +14,7 @@
     <url>http://www.kelecc.top</url>
     <modules>
         <module>game-fun-article</module>
+        <module>game-fun-user</module>
     </modules>
 
     <properties>

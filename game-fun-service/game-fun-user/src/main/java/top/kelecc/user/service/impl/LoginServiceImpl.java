@@ -1,4 +1,4 @@
-package top.kelecc.security.service.impl;
+package top.kelecc.user.service.impl;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -11,8 +11,8 @@ import top.kelecc.model.common.enums.HttpCodeEnum;
 import top.kelecc.model.common.user.vo.UserVo;
 import top.kelecc.security.component.DaoUserDetails;
 import top.kelecc.security.dao.UserMapper;
-import top.kelecc.security.service.LoginService;
 import top.kelecc.security.utils.RedisCache;
+import top.kelecc.user.service.LoginService;
 import top.kelecc.utils.common.JwtUtil;
 
 import javax.annotation.Resource;

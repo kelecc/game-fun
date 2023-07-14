@@ -1,4 +1,4 @@
-package top.kelecc.security.controller;
+package top.kelecc.user.controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import top.kelecc.model.common.dtos.ResponseResult;
 import top.kelecc.model.common.enums.HttpCodeEnum;
 import top.kelecc.model.common.user.dto.UserLoginDto;
-import top.kelecc.security.service.LoginService;
+import top.kelecc.user.service.LoginService;
 
 import javax.annotation.Resource;
 

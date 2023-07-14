@@ -1,4 +1,4 @@
-package top.kelecc.security.service;
+package top.kelecc.user.service;
 
 import top.kelecc.model.common.dtos.ResponseResult;
 

@@ -1,6 +1,7 @@
 package top.kelecc.security.config;
 
 import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -32,15 +33,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private RedisCache redisCache;
     @Resource
     private UserMapper userMapper;
-    private final String[] NOT_AUTH_PATH = {
-            "/favicon.ico",
-            "/service-worker.js",
-            "/api/v1/login/login_auth/**",
-            "/v2/api-docs/**",
-            "/swagger-resources/**",
-            "/doc.html",
-            "/webjars/**"
-    };
+    @Value("${security.not-auth-path:/api/v1/public/**,/api/v2/public/**, /api/v1/login/login_auth/**, /v2/api-docs/**, /swagger-resources/**, /doc.html**}")
+    private String[] notAuthPath;
+    @Value("${security.static-path:/webjars/**, /service-worker.js, /static/**, /css/**, /js/**, /img/**, /fonts/**, /favicon.ico}")
+    private String[] staticPath;
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
@@ -61,7 +57,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 // 对于登录接口 允许匿名访问
-                .antMatchers(this.NOT_AUTH_PATH).anonymous()
+                .antMatchers(this.notAuthPath).permitAll()
                 // 除上面外的所有请求全部需要鉴权认证
                 .anyRequest().authenticated();
         http.addFilterBefore(new JwtAuthenticationTokenFilter(redisCache,userMapper), UsernamePasswordAuthenticationFilter.class);
@@ -71,7 +67,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers(this.NOT_AUTH_PATH);
+        web.ignoring().antMatchers(this.staticPath);
     }
 
     @Bean
