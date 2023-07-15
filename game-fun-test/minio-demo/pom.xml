@@ -23,5 +23,10 @@
             <artifactId>minio</artifactId>
             <version>8.5.4</version>
         </dependency>
+        <dependency>
+            <groupId>top.kelecc</groupId>
+            <artifactId>kele-file-starter</artifactId>
+            <version>1.0</version>
+        </dependency>
     </dependencies>
 </project>

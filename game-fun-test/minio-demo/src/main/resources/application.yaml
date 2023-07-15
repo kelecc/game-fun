@@ -1,0 +1,6 @@
+minio:
+  access-key: minio
+  secret-key: minio123
+  bucket: game-fun
+  endpoint: http://localhost:9000
+  read-url: http://localhost:9000
