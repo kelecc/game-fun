@@ -128,6 +128,7 @@ public class FileStorageServiceImpl implements FileStorageService {
         } catch (Exception e) {
             log.error("minio remove file error.  pathUrl:{}", pathUrl);
             e.printStackTrace();
+            throw new RuntimeException("删除文件：" + pathUrl + "失败");
         }
     }
 
