@@ -98,6 +98,11 @@
                 <version>${project.version}</version>
             </dependency>
             <dependency>
+                <artifactId>kele-file-starter</artifactId>
+                <groupId>top.kelecc</groupId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
                 <artifactId>game-fun-security</artifactId>
                 <groupId>top.kelecc</groupId>
                 <version>${project.version}</version>
