@@ -3,27 +3,25 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>top.kelecc</groupId>
-        <artifactId>game-fun</artifactId>
+        <artifactId>game-fun-test</artifactId>
         <version>1.0</version>
     </parent>
 
-    <artifactId>game-fun-test</artifactId>
-    <packaging>pom</packaging>
+    <artifactId>minio-demo</artifactId>
+    <packaging>jar</packaging>
 
-    <name>game-fun-test</name>
-    <url>http://www.kelecc.top</url>
-    <modules>
-        <module>minio-demo</module>
-    </modules>
+    <name>minio-demo</name>
+    <url>http://maven.apache.org</url>
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <dependencies>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
+            <groupId>io.minio</groupId>
+            <artifactId>minio</artifactId>
+            <version>8.5.4</version>
         </dependency>
     </dependencies>
 </project>
