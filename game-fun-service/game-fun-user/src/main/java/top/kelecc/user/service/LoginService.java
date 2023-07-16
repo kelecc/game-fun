@@ -13,7 +13,7 @@ public interface LoginService {
      * @param password
      * @return
      */
-    ResponseResult login(String username, String password);
+    ResponseResult login(String username, String password, String userType);
 
-    Object logout();
+    Object logout(String userType);
 }

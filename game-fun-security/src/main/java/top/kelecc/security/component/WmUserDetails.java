@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import top.kelecc.model.common.user.pojos.ApUser;
+import top.kelecc.model.user.pojo.WmUser;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -22,13 +22,13 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class DaoUserDetails implements UserDetails {
-    private ApUser user;
+public class WmUserDetails implements UserDetails {
+    private WmUser user;
     private List<String> permissions;
     @JSONField(serialize = false)
     private List<GrantedAuthority> authorities;
 
-    public DaoUserDetails(ApUser user, List<String> permissions) {
+    public WmUserDetails(WmUser user, List<String> permissions) {
         this.user = user;
         this.permissions = permissions;
     }
@@ -52,26 +52,26 @@ public class DaoUserDetails implements UserDetails {
 
     @Override
     public String getUsername() {
-        return user.getPhone();
+        return user.getName();
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        return user.getStatus();
+        return user.getStatus() == 9;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return user.getStatus();
+        return user.getStatus() == 9;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return user.getStatus();
+        return user.getStatus() == 9;
     }
 
     @Override
     public boolean isEnabled() {
-        return user.getStatus();
+        return user.getStatus() == 9;
     }
 }

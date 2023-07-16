@@ -1,4 +1,4 @@
-package top.kelecc.model.common.user.dto;
+package top.kelecc.model.user.dto;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -12,7 +12,7 @@ import javax.validation.constraints.NotBlank;
  * @date 2023/7/12 16:10
  */
 @Data
-public class UserLoginDto {
+public class AppUserLoginDto {
     /**
      * 密码明文
      */

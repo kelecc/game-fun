@@ -7,7 +7,7 @@ import javax.annotation.Resource;
 @SpringBootTest
 class UserMapperTest {
     @Resource
-    private UserMapper userMapper;
+    private AppUserMapper userMapper;
 
 //    @Test
 //    void selectPermissionByUserIdTest() {

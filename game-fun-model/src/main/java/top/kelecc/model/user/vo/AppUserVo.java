@@ -1,7 +1,7 @@
-package top.kelecc.model.common.user.vo;
+package top.kelecc.model.user.vo;
 
 import lombok.Data;
-import top.kelecc.model.common.user.pojos.ApUser;
+import top.kelecc.model.user.pojo.ApUser;
 
 import java.util.Date;
 
@@ -12,8 +12,8 @@ import java.util.Date;
  * @date 2023/7/12 16:05
  */
 @Data
-public class UserVo {
-    public UserVo(ApUser user) {
+public class AppUserVo {
+    public AppUserVo(ApUser user) {
         this.createdTime = user.getCreatedTime();
         this.flag = user.getFlag();
         this.id = user.getId();

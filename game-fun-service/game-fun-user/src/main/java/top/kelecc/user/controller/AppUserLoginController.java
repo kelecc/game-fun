@@ -11,7 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import top.kelecc.model.common.dtos.ResponseResult;
 import top.kelecc.model.common.enums.HttpCodeEnum;
-import top.kelecc.model.common.user.dto.UserLoginDto;
+import top.kelecc.model.user.dto.AppUserLoginDto;
+import top.kelecc.security.constants.UserTypeConstans;
 import top.kelecc.user.service.LoginService;
 
 import javax.annotation.Resource;
@@ -24,8 +25,8 @@ import javax.annotation.Resource;
  */
 @RestController
 @RequestMapping("/api/v1/login")
-@Api(value = "登录模块", tags = "登录模块")
-public class LoginController {
+@Api(value = "App登录模块", tags = "App登录模块")
+public class AppUserLoginController {
     @Resource
     private LoginService loginService;
 
@@ -34,9 +35,9 @@ public class LoginController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "token", value = "不要带token")
     })
-    public ResponseResult login(@RequestBody UserLoginDto user) {
+    public ResponseResult login(@RequestBody AppUserLoginDto user) {
         if (StringUtils.isNotBlank(user.getPassword()) && StringUtils.isNotBlank(user.getPhone())) {
-            return loginService.login(user.getPhone(), user.getPassword());
+            return loginService.login(user.getPhone(), user.getPassword(), UserTypeConstans.APP_USER);
         }
         return ResponseResult.errorResult(HttpCodeEnum.PARAM_INVALID, "手机号或者密码不能为空！");
     }
@@ -44,6 +45,6 @@ public class LoginController {
     @ApiOperation("登出")
     @PostMapping("/logout")
     public Object logout() {
-        return loginService.logout();
+        return loginService.logout(UserTypeConstans.APP_USER);
     }
 }

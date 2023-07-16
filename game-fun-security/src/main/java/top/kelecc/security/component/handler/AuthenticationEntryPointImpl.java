@@ -1,4 +1,4 @@
-package top.kelecc.security.component;
+package top.kelecc.security.component.handler;
 
 import com.alibaba.fastjson.JSON;
 import org.springframework.security.core.AuthenticationException;

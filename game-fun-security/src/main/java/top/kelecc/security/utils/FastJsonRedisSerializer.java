@@ -24,6 +24,8 @@ public class FastJsonRedisSerializer<T> implements RedisSerializer<T> {
 
     static {
         ParserConfig.getGlobalInstance().addAccept("top.kelecc.security.component.DaoUserDetails");
+        ParserConfig.getGlobalInstance().addAccept("top.kelecc.security.component.AppUserDetails");
+        ParserConfig.getGlobalInstance().addAccept("top.kelecc.security.component.WmUserDetails");
     }
 
     public FastJsonRedisSerializer(Class<T> clazz) {

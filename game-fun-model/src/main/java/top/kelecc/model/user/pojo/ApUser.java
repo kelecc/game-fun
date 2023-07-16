@@ -1,4 +1,4 @@
-package top.kelecc.model.common.user.pojos;
+package top.kelecc.model.user.pojo;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
