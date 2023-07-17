@@ -25,13 +25,13 @@ import javax.annotation.Resource;
  */
 @RestController
 @RequestMapping("/login")
-@Api(value = "weMedia登录模块", tags = "weMedia登录模块")
+@Api(value = "自媒体登录模块", tags = "自媒体登录模块")
 public class WeMediaLoginController {
     @Resource
     private LoginService loginService;
 
     @PostMapping("/in")
-    @ApiOperation("登录")
+    @ApiOperation("自媒体登录")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "token", value = "不要带token")
     })
@@ -42,7 +42,7 @@ public class WeMediaLoginController {
         return ResponseResult.errorResult(HttpCodeEnum.PARAM_INVALID, "用户名或者密码不能为空！");
     }
 
-    @ApiOperation("登出")
+    @ApiOperation("自媒体登出")
     @PostMapping("/out")
     public Object logout() {
         return loginService.logout(UserTypeConstans.WE_MEDIA_USER);

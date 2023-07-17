@@ -31,7 +31,7 @@ public class AppUserLoginController {
     private LoginService loginService;
 
     @PostMapping("/login_auth")
-    @ApiOperation("登录")
+    @ApiOperation("app登录")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "token", value = "不要带token")
     })
@@ -42,7 +42,7 @@ public class AppUserLoginController {
         return ResponseResult.errorResult(HttpCodeEnum.PARAM_INVALID, "手机号或者密码不能为空！");
     }
 
-    @ApiOperation("登出")
+    @ApiOperation("app登出")
     @PostMapping("/logout")
     public Object logout() {
         return loginService.logout(UserTypeConstans.APP_USER);
