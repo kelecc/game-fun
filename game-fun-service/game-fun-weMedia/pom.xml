@@ -1,0 +1,24 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>top.kelecc</groupId>
+        <artifactId>game-fun-service</artifactId>
+        <version>1.0</version>
+    </parent>
+
+    <groupId>top.kelecc.weMedia</groupId>
+    <artifactId>game-fun-weMedia</artifactId>
+    <packaging>jar</packaging>
+
+    <name>game-fun-weMedia</name>
+    <url>http://www.kelecc.top</url>
+
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencies>
+    </dependencies>
+</project>

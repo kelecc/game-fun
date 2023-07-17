@@ -15,6 +15,7 @@
     <modules>
         <module>game-fun-article</module>
         <module>game-fun-user</module>
+        <module>game-fun-weMedia</module>
     </modules>
 
     <properties>
