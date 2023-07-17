@@ -20,5 +20,9 @@
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>top.kelecc</groupId>
+            <artifactId>kele-file-starter</artifactId>
+        </dependency>
     </dependencies>
 </project>
