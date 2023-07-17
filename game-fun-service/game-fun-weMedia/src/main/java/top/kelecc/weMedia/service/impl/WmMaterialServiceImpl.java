@@ -1,13 +1,18 @@
 package top.kelecc.weMedia.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import top.kelecc.file.starter.service.FileStorageService;
+import top.kelecc.model.common.dtos.PageResponseResult;
 import top.kelecc.model.common.dtos.ResponseResult;
 import top.kelecc.model.common.enums.HttpCodeEnum;
+import top.kelecc.model.weMedia.dto.WmMaterialDto;
 import top.kelecc.model.weMedia.pojo.WmMaterial;
 import top.kelecc.weMedia.mapper.WmMaterialMapper;
 import top.kelecc.weMedia.service.WmMaterialService;
@@ -53,5 +58,23 @@ public class WmMaterialServiceImpl extends ServiceImpl<WmMaterialMapper, WmMater
             return ResponseResult.errorResult(HttpCodeEnum.SERVER_ERROR, "保存素材信息到数据库失败");
         }
         return ResponseResult.okResult(wmMaterial);
+    }
+
+    @Override
+    public ResponseResult findList(Integer userId, WmMaterialDto dto) {
+        //分页查询
+        IPage<WmMaterial> page = new Page<>(dto.getPage(), dto.getSize());
+        LambdaQueryWrapper<WmMaterial> wrapper = new LambdaQueryWrapper<>();
+        //是否只查收藏的
+        if (dto.getIsCollection() == 1) {
+            wrapper.eq(WmMaterial::getIsCollection, dto.getIsCollection());
+        }
+        //按用户id查
+        wrapper.eq(WmMaterial::getUserId, userId);
+        wrapper.orderByDesc(WmMaterial::getCreatedTime);
+        page = page(page, wrapper);
+        PageResponseResult pageResponseResult = new PageResponseResult(dto.getPage(), dto.getSize(), (int) page.getTotal());
+        pageResponseResult.setData(page.getRecords());
+        return pageResponseResult;
     }
 }
