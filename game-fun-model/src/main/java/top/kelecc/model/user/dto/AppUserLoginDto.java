@@ -13,17 +13,19 @@ import javax.validation.constraints.NotBlank;
  */
 @Data
 public class AppUserLoginDto {
-    /**
-     * 密码明文
-     */
-    @ApiModelProperty(value = "密码明文" ,dataType = "String",required = true)
-    @NotBlank(message = "密码不能为空")
-    private String password;
 
     /**
      * 手机号
      */
-    @ApiModelProperty(value = "手机号" ,dataType = "String",required = true)
+    @ApiModelProperty(value = "手机号", dataType = "String", example = "19990502617", required = true)
     @NotBlank(message = "手机号不能为空")
     private String phone;
+
+    /**
+     * 密码明文
+     */
+    @ApiModelProperty(value = "密码明文", dataType = "String", example = "123456", required = true)
+    @NotBlank(message = "密码不能为空")
+    private String password;
+
 }
