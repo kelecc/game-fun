@@ -59,6 +59,8 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
             return;
         }
         HashMap<String, String> map = JSON.parseObject(jsonData, HashMap.class);
+        // 将userId存入请求中
+        httpServletRequest.setAttribute(SecurityMapKeyConstants.ID_KEY, map.get(SecurityMapKeyConstants.ID_KEY));
         if (map.isEmpty() || !map.containsKey(SecurityMapKeyConstants.ID_KEY) || !map.containsKey(SecurityMapKeyConstants.USER_TYPE_KEY)) {
             filterChain.doFilter(httpServletRequest, httpServletResponse);
             return;
