@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import top.kelecc.common.constants.RedisKeyConstants;
 import top.kelecc.model.common.dtos.ResponseResult;
 import top.kelecc.model.common.enums.HttpCodeEnum;
+import top.kelecc.model.user.pojo.WmUser;
 import top.kelecc.model.user.vo.AppUserVo;
 import top.kelecc.security.component.AppUserDetails;
 import top.kelecc.security.component.WmUserDetails;
@@ -89,7 +90,9 @@ public class LoginServiceImpl implements LoginService {
             return new AppUserVo(appUserDetails.getUser());
         } else if (UserTypeConstans.WE_MEDIA_USER.equals(userType)) {
             WmUserDetails wmUserDetails = (WmUserDetails) userDetails;
-            return wmUserDetails.getUser();
+            WmUser user = wmUserDetails.getUser();
+            user.setPassword(null);
+            return user;
         } else {
             throw new RuntimeException("获取Vo失败，暂不支持的用户类型");
         }
