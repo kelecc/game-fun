@@ -46,7 +46,7 @@ public class WmMaterialController {
         } catch (IOException e) {
             return ResponseResult.errorResult(HttpCodeEnum.PARAM_INVALID, "上传文件不是图片");
         }
-        return wmMaterialService.uploadPicture(multipartFile, Integer.valueOf((String) request.getAttribute(SecurityMapKeyConstants.ID_KEY)));
+        return wmMaterialService.uploadPicture(multipartFile, (Integer) request.getAttribute(SecurityMapKeyConstants.ID_KEY));
     }
 
     @PostMapping("/list")

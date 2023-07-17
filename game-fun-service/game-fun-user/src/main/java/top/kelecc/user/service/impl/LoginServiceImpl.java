@@ -61,8 +61,8 @@ public class LoginServiceImpl implements LoginService {
         UserDetails userDetails = (UserDetails) authenticate.getPrincipal();
 
         //生成jwt
-        String userId = createJwt(userDetails, userType);
-        HashMap<String, String> dataMap = new HashMap<>(2);
+        Integer userId = getUserIdByUserDetails(userDetails, userType);
+        HashMap<String, Object> dataMap = new HashMap<>(2);
         dataMap.put(SecurityMapKeyConstants.ID_KEY, userId);
         dataMap.put(SecurityMapKeyConstants.USER_TYPE_KEY, userType);
         String jwt = JwtUtil.createJWT(JSON.toJSONString(dataMap));
@@ -98,13 +98,13 @@ public class LoginServiceImpl implements LoginService {
         }
     }
 
-    private String createJwt(UserDetails userDetails, String userType) {
+    private Integer getUserIdByUserDetails(UserDetails userDetails, String userType) {
         if (UserTypeConstans.APP_USER.equals(userType)) {
             AppUserDetails appUserDetails = (AppUserDetails) userDetails;
-            return appUserDetails.getUser().getId().toString();
+            return appUserDetails.getUser().getId();
         } else if (UserTypeConstans.WE_MEDIA_USER.equals(userType)) {
             WmUserDetails wmUserDetails = (WmUserDetails) userDetails;
-            return wmUserDetails.getUser().getId().toString();
+            return wmUserDetails.getUser().getId();
         } else {
             throw new RuntimeException("获取id失败，暂不支持的用户类型");
         }
