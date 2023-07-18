@@ -54,6 +54,6 @@ public class WmMaterialController {
     public ResponseResult list(HttpServletRequest request, @Validated @RequestBody WmMaterialDto dto){
         //校验分页参数
         dto.checkParam();
-        return wmMaterialService.findList(Integer.valueOf((String)request.getAttribute(SecurityMapKeyConstants.ID_KEY)), dto);
+        return wmMaterialService.findList((Integer)request.getAttribute(SecurityMapKeyConstants.ID_KEY), dto);
     }
 }
