@@ -39,9 +39,9 @@
         <appender-ref ref="CONSOLE"/>
     </logger>
 
-    <logger name="org.springframework.boot" level="debug"/>
+    <logger name="org.springframework.boot" level="info"/>
     <logger name="com.alibaba.nacos" level="info"/>
-    <root level="debug">
+    <root level="info">
         <!--<appender-ref ref="ASYNC"/>-->
         <appender-ref ref="FILE"/>
         <appender-ref ref="CONSOLE"/>
