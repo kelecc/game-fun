@@ -20,6 +20,8 @@
         <module>game-fun-security</module>
         <module>game-fun-test</module>
         <module>game-fun-basic</module>
+        <module>game-fun-baiduAi</module>
+
     </modules>
 
     <!-- 继承Spring boot工程 -->
@@ -72,6 +74,7 @@
         <com.alibaba.cloud>2.2.5.RELEASE</com.alibaba.cloud>
         <xxl.job.version>2.2.0-SNAPSHOT</xxl.job.version>
         <log4j2.version>2.18.0</log4j2.version>
+        <redisson.version>3.19.1</redisson.version>
     </properties>
 
     <dependencies>
@@ -279,7 +282,11 @@
                     </exclusion>
                 </exclusions>
             </dependency>
-
+            <dependency>
+                <groupId>org.redisson</groupId>
+                <artifactId>redisson</artifactId>
+                <version>${redisson.version}</version>
+            </dependency>
             <dependency>
                 <groupId>org.apache.kafka</groupId>
                 <artifactId>kafka-clients</artifactId>

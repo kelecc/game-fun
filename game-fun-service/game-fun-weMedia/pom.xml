@@ -24,5 +24,10 @@
             <groupId>top.kelecc</groupId>
             <artifactId>kele-file-starter</artifactId>
         </dependency>
+        <dependency>
+            <groupId>top.kelecc</groupId>
+            <artifactId>game-fun-baiduAi</artifactId>
+            <version>1.0</version>
+        </dependency>
     </dependencies>
 </project>
