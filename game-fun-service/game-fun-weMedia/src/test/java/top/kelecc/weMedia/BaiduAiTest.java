@@ -8,6 +8,7 @@ import top.kelecc.file.starter.service.FileStorageService;
 import javax.annotation.Resource;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * @author 可乐
@@ -24,17 +25,15 @@ public class BaiduAiTest {
 
     @Test
     public void textCensorTest() throws IOException {
-        String s1 = this.imgCensor.TextCensor("sb");
-        System.out.println(s1);
-        String s2 = this.imgCensor.TextCensor("你好");
-        System.out.println(s2);
+        Map<String, Object> map = this.imgCensor.textCensor("sb");
+        System.out.println(map);
     }
 
     @Test
     public void imgCensorTest() throws FileNotFoundException {
         byte[] bytes = fileStorageService.downLoadFile("http://localhost:9000/game-fun/2023/07/17/bd31d653caa943e39e03a8df556ac4ec.png");
-        String s = this.imgCensor.imgCensor(bytes);
-        System.out.println(s);
+        Map<String, Object> map = this.imgCensor.imgCensor(bytes);
+        System.out.println(map);
     }
 
 }

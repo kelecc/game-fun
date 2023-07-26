@@ -2,6 +2,7 @@ package top.kelecc.baiduAi;
 
 
 import com.alibaba.fastjson.JSON;
+import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,6 +19,7 @@ import java.util.concurrent.TimeUnit;
  *
  * @author 可乐
  */
+@Slf4j
 public class ImgAndTextCensor {
     public static final String BAIDU_AI_ACCESS_TOKEN_KEY = "baidu_ai_access_token";
     @Resource
@@ -30,7 +32,7 @@ public class ImgAndTextCensor {
 
     static final OkHttpClient HTTP_CLIENT = new OkHttpClient().newBuilder().build();
 
-    public String imgCensor(byte[] imgData) {
+    public Map<String, Object> imgCensor(byte[] imgData) {
         // 请求url
         String url = "https://aip.baidubce.com/rest/2.0/solution/v1/img_censor/v2/user_defined";
         try {
@@ -39,28 +41,30 @@ public class ImgAndTextCensor {
 
             String param = "image=" + imgParam;
 
-            return getAccessInfo(url, param);
+            String auditResult = getAuditResult(url, param);
+            return JSON.parseObject(auditResult, Map.class);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("图片审核失败");
+            throw new RuntimeException("图片审核失败");
         }
-        return null;
     }
 
-    public String TextCensor(String text) {
+    public Map<String, Object> textCensor(String text) {
         // 请求url
         String url = "https://aip.baidubce.com/rest/2.0/solution/v1/text_censor/v2/user_defined";
         try {
             String param = "text=" + URLEncoder.encode(text, "utf-8");
 
-            return getAccessInfo(url, param);
+            String auditResult = getAuditResult(url, param);
+            return JSON.parseObject(auditResult, Map.class);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("文本审核失败");
+            throw new RuntimeException("文本审核失败");
         }
-        return null;
     }
 
     @NotNull
-    private String getAccessInfo(String url, String param) throws IOException {
+    private String getAuditResult(String url, String param) throws IOException {
         String accessToken = getAccessToken(apiKey, secretKey);
         Request request = new Request.Builder()
                 .url(url + "?access_token=" + accessToken)
