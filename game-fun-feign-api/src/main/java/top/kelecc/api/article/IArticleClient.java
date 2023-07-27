@@ -3,6 +3,7 @@ package top.kelecc.api.article;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import top.kelecc.api.article.fallback.IArticleClientFallbackFactory;
 import top.kelecc.model.article.dtos.ArticleDto;
 import top.kelecc.model.common.dtos.ResponseResult;
 
@@ -12,7 +13,7 @@ import top.kelecc.model.common.dtos.ResponseResult;
  * @description:
  * @date 2023/7/23 16:26
  */
-@FeignClient(value = "game-fun-article")
+@FeignClient(value = "game-fun-article", fallbackFactory = IArticleClientFallbackFactory.class)
 public interface IArticleClient {
 
     /**

@@ -79,6 +79,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 // 对于登录接口 允许匿名访问
                 .antMatchers(this.notAuthPath).permitAll()
+                // 各个服务之间放行
+                .antMatchers("/**").hasIpAddress("192.168.199.1")
                 // 除上面外的所有请求全部需要鉴权认证
                 .anyRequest().authenticated();
         http.addFilterBefore(new JwtAuthenticationTokenFilter(redisCache), UsernamePasswordAuthenticationFilter.class);
