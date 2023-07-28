@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONArray;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import top.kelecc.api.article.IArticleClient;
@@ -49,6 +50,7 @@ public class WmNewsAutoScanServiceImpl implements WmNewsAutoScanService {
     private WeMediaUserMapper wmUserMapper;
 
     @Override
+    @Async
     public void autoScanWmNews(Integer id) {
         WmNews wmNews = wmNewsMapper.selectById(id);
         if (wmNews == null) {

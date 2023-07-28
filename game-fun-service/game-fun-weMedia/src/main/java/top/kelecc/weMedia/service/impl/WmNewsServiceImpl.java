@@ -24,6 +24,7 @@ import top.kelecc.model.weMedia.pojo.WmNewsMaterial;
 import top.kelecc.weMedia.mapper.WmMaterialMapper;
 import top.kelecc.weMedia.mapper.WmNewsMapper;
 import top.kelecc.weMedia.mapper.WmNewsMaterialMapper;
+import top.kelecc.weMedia.service.WmNewsAutoScanService;
 import top.kelecc.weMedia.service.WmNewsService;
 
 import javax.annotation.Resource;
@@ -41,7 +42,8 @@ public class WmNewsServiceImpl extends ServiceImpl<WmNewsMapper, WmNews> impleme
     WmNewsMaterialMapper wmNewsMaterialMapper;
     @Resource
     WmMaterialMapper wmMaterialMapper;
-
+    @Resource
+    WmNewsAutoScanService wmNewsAutoScanService;
     @Override
     public ResponseResult findByWmNewsPageReqDto(WmNewsPageReqDto dto, Integer userId) {
         Page<WmNews> page = new Page<>(dto.getPage(), dto.getSize());
@@ -87,6 +89,8 @@ public class WmNewsServiceImpl extends ServiceImpl<WmNewsMapper, WmNews> impleme
         List<String> materials = getUrlInfo(dto.getContent());
         saveRelativeInfoForContent(materials, wmNews.getId());
         saveRelativeInfoForCover(dto, wmNews, materials);
+        // 异步审核文章
+        wmNewsAutoScanService.autoScanWmNews(wmNews.getId());
         return ResponseResult.okResult(HttpCodeEnum.SUCCESS);
     }
 
