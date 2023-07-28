@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import top.kelecc.article.mapper.ApArticleConfigMapper;
 import top.kelecc.article.mapper.ApArticleContentMapper;
 import top.kelecc.article.mapper.ApArticleMapper;
+import top.kelecc.article.service.ArticleFreemarkerService;
 import top.kelecc.article.service.ArticleService;
 import top.kelecc.model.article.dtos.ArticleDto;
 import top.kelecc.model.article.pojo.ApArticle;
@@ -33,6 +34,9 @@ public class ArticleServiceImpl extends ServiceImpl<ApArticleMapper, ApArticle> 
     private ApArticleConfigMapper apArticleConfigMapper;
     @Resource
     private ApArticleContentMapper apArticleContentMapper;
+    @Resource
+    private ArticleFreemarkerService articleFreemarkerService;
+
 
     @Override
     public int update(LambdaUpdateWrapper<ApArticle> lambdaUpdateWrapper) {
@@ -64,6 +68,8 @@ public class ArticleServiceImpl extends ServiceImpl<ApArticleMapper, ApArticle> 
             apArticleContent.setContent(dto.getContent());
             apArticleContentMapper.updateById(apArticleContent);
         }
+        // 4.异步生成文章静态化页面
+        articleFreemarkerService.buildArticleToMinio(apArticle, dto.getContent());
         return ResponseResult.okResult(apArticle.getId());
     }
 }
