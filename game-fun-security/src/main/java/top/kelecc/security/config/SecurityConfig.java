@@ -14,6 +14,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 import top.kelecc.security.component.CustomAuthenticationProvider;
 import top.kelecc.security.component.filter.JwtAuthenticationTokenFilter;
 import top.kelecc.security.component.service.CustomUserDetailsService;
@@ -21,6 +22,8 @@ import top.kelecc.security.dao.AppUserMapper;
 import top.kelecc.security.utils.RedisCache;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * @author 可乐
@@ -43,7 +46,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private String[] notAuthPath;
     @Value("${security.static-path:/webjars/**, /service-worker.js, /static/**, /css/**, /js/**, /img/**, /fonts/**, /favicon.ico}")
     private String[] staticPath;
-
+    @Value("#{'${security.white-ip}'.trim().split(',')}")
+    private List<String> whiteIp;
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
@@ -79,13 +83,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 // 对于登录接口 允许匿名访问
                 .antMatchers(this.notAuthPath).permitAll()
-                // 各个服务之间放行
-                .antMatchers("/**").hasIpAddress("192.168.199.1")
+                .requestMatchers(isWhiteIp()).permitAll()
                 // 除上面外的所有请求全部需要鉴权认证
                 .anyRequest().authenticated();
         http.addFilterBefore(new JwtAuthenticationTokenFilter(redisCache), UsernamePasswordAuthenticationFilter.class);
         http.cors();
         http.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint);
+    }
+
+    private RequestMatcher isWhiteIp() {
+        return new RequestMatcher() {
+            @Override
+            public boolean matches(HttpServletRequest request) {
+                String ipAddress = request.getRemoteAddr();
+                return whiteIp.contains(ipAddress);
+            }
+        };
     }
 
     @Override
