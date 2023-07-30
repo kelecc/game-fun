@@ -21,6 +21,7 @@
         <module>game-fun-test</module>
         <module>game-fun-basic</module>
         <module>game-fun-baiduAi</module>
+        <module>game-fun-schedule</module>
 
     </modules>
 
