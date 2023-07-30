@@ -13,3 +13,4 @@ spring:
         extension-configs[0]: datasource.yaml
         extension-configs[1]: redis.yaml
         extension-configs[2]: security.yaml
+

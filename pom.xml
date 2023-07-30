@@ -75,6 +75,7 @@
         <xxl.job.version>2.2.0-SNAPSHOT</xxl.job.version>
         <log4j2.version>2.18.0</log4j2.version>
         <redisson.version>3.19.1</redisson.version>
+        <seata.version>1.4.2</seata.version>
     </properties>
 
     <dependencies>

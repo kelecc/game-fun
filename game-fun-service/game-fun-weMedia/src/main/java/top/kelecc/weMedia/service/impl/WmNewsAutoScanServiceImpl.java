@@ -1,6 +1,7 @@
 package top.kelecc.weMedia.service.impl;
 
 import com.alibaba.fastjson.JSONArray;
+import io.seata.spring.annotation.GlobalTransactional;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -51,6 +52,7 @@ public class WmNewsAutoScanServiceImpl implements WmNewsAutoScanService {
 
     @Override
     @Async
+    @GlobalTransactional
     public void autoScanWmNews(Integer id) {
         WmNews wmNews = wmNewsMapper.selectById(id);
         if (wmNews == null) {

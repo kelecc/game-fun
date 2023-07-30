@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import top.kelecc.article.mapper.ApArticleConfigMapper;
 import top.kelecc.article.mapper.ApArticleContentMapper;
 import top.kelecc.article.mapper.ApArticleMapper;
@@ -27,6 +28,7 @@ import javax.annotation.Resource;
  */
 @Service
 @Slf4j
+@Transactional
 public class ArticleServiceImpl extends ServiceImpl<ApArticleMapper, ApArticle> implements ArticleService {
     @Resource
     private ApArticleMapper apArticleMapper;
