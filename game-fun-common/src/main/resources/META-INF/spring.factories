@@ -1,4 +1,4 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
   top.kelecc.common.exception.ExceptionCatch,\
   top.kelecc.common.knife4j.Swagger2Configuration,\
-  top.kelecc.common.redis.RedisConfig
+  top.kelecc.common.redis.RedisCache
