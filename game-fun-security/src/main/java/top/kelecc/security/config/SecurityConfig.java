@@ -15,11 +15,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.RequestMatcher;
+import top.kelecc.common.redis.RedisCache;
 import top.kelecc.security.component.CustomAuthenticationProvider;
 import top.kelecc.security.component.filter.JwtAuthenticationTokenFilter;
 import top.kelecc.security.component.service.CustomUserDetailsService;
 import top.kelecc.security.dao.AppUserMapper;
-import top.kelecc.security.utils.RedisCache;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;

@@ -7,9 +7,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.filter.OncePerRequestFilter;
 import top.kelecc.common.constants.RedisKeyConstants;
+import top.kelecc.common.redis.RedisCache;
 import top.kelecc.security.constants.SecurityMapKeyConstants;
 import top.kelecc.security.constants.UserTypeConstans;
-import top.kelecc.security.utils.RedisCache;
 import top.kelecc.utils.common.JwtUtil;
 
 import javax.servlet.FilterChain;

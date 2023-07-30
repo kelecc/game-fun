@@ -9,6 +9,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import top.kelecc.common.constants.RedisKeyConstants;
+import top.kelecc.common.redis.RedisCache;
 import top.kelecc.model.common.dtos.ResponseResult;
 import top.kelecc.model.common.enums.HttpCodeEnum;
 import top.kelecc.model.user.pojo.WmUser;
@@ -17,7 +18,6 @@ import top.kelecc.security.component.AppUserDetails;
 import top.kelecc.security.component.WmUserDetails;
 import top.kelecc.security.constants.SecurityMapKeyConstants;
 import top.kelecc.security.constants.UserTypeConstans;
-import top.kelecc.security.utils.RedisCache;
 import top.kelecc.user.service.LoginService;
 import top.kelecc.utils.common.JwtUtil;
 
