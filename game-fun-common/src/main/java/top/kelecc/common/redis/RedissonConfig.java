@@ -21,12 +21,9 @@ public class RedissonConfig {
 
     @Bean
     public RedissonClient redissonClient() {
-        // 默认连接地址 127.0.0.1:6379
-        RedissonClient redisson = Redisson.create();
         Config config = new Config();
         config.useSingleServer().setAddress("redis://" + redisAddress + ":" + port)
-                .setUsername("")
                 .setPassword(password);
-        return redisson;
+        return Redisson.create(config);
     }
 }
