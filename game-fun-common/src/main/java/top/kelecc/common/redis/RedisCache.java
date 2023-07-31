@@ -1,12 +1,15 @@
 package top.kelecc.common.redis;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.BoundSetOperations;
-import org.springframework.data.redis.core.HashOperations;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.ValueOperations;
+import org.springframework.dao.DataAccessException;
+import org.springframework.data.redis.connection.RedisConnection;
+import org.springframework.data.redis.connection.StringRedisConnection;
+import org.springframework.data.redis.core.*;
+import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Nullable;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -14,9 +17,12 @@ import java.util.concurrent.TimeUnit;
  * @author 可乐
  */
 @Component
+@Slf4j
 public class RedisCache {
     @Autowired
     public RedisTemplate redisTemplate;
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
 
     /**
      * 缓存基本的对象，Integer、String、实体类等
@@ -105,6 +111,16 @@ public class RedisCache {
         return count == null ? 0 : count;
     }
 
+    public <T> long setCacheListRightPush(final String key, final T value) {
+        Long count = redisTemplate.opsForList().rightPush(key, value);
+        return count == null ? 0 : count;
+    }
+
+    public <T> long setCacheListLeftPush(final String key, final T value) {
+        Long count = redisTemplate.opsForList().leftPush(key, value);
+        return count == null ? 0 : count;
+    }
+
     /**
      * 获得缓存的list对象
      *
@@ -113,6 +129,17 @@ public class RedisCache {
      */
     public <T> List<T> getCacheList(final String key) {
         return redisTemplate.opsForList().range(key, 0, -1);
+    }
+
+    /**
+     * 缓存zSet数据
+     *
+     * @param key  缓存的键值
+     * @param data 待缓存的zSet数据
+     * @return 缓存的对象
+     */
+    public <T> boolean setCacheZset(final String key, final T data, final double score) {
+        return redisTemplate.boundZSetOps(key).add(data, score);
     }
 
     /**
@@ -208,13 +235,98 @@ public class RedisCache {
         return redisTemplate.opsForHash().multiGet(key, hKeys);
     }
 
+    public long deleteFromList(String key, Integer count, Object value) {
+        return redisTemplate.opsForList().remove(key, count, value);
+    }
+
+    public long deleteFromZset(String key, Object value) {
+        return redisTemplate.opsForZSet().remove(key, value);
+    }
+
+    public <T> T getCacheListLeftPop(String key) {
+        ListOperations<String, T> listOperations = redisTemplate.opsForList();
+        return listOperations.leftPop(key);
+    }
+
+    public <T> T getCacheListRightPop(String key) {
+        ListOperations<String, T> listOperations = redisTemplate.opsForList();
+        return listOperations.rightPop(key);
+    }
+
+    public <T> Set<T> getCacheZsetRangeByScore(String key, double min, double max) {
+        ZSetOperations zSetOperations = redisTemplate.opsForZSet();
+        return zSetOperations.rangeByScore(key, min, max);
+    }
+
     /**
-     * 获得缓存的基本对象列表
+     * 根据Score值查询集合元素
      *
-     * @param pattern 字符串前缀
-     * @return 对象列表
+     * @param key
+     * @param min
+     *            最小值
+     * @param max
+     *            最大值
+     * @return
      */
-    public Collection<String> keys(final String pattern) {
-        return redisTemplate.keys(pattern);
+    public Set<String> zRangeByScore(String key, double min, double max) {
+        return stringRedisTemplate.opsForZSet().rangeByScore(key, min, max);
+    }
+
+    /**
+     * 扫描主键，建议使用
+     *
+     * @param pattern
+     * @return
+     */
+    public Set<String> scan(String pattern, int count) {
+        Set<String> keys = new HashSet<>();
+        RedisSerializer serializer = redisTemplate.getKeySerializer();
+        ScanOptions scanOptions = ScanOptions.scanOptions().match(pattern).count(count).build();
+        Cursor<byte[]> cursor = (Cursor<byte[]>) redisTemplate.execute(connection -> connection.scan(scanOptions), true);
+        while (cursor.hasNext()) {
+            keys.add(String.valueOf(serializer.deserialize(cursor.next())));
+        }
+        return keys;
+    }
+
+    public Set<String> scan(String pattern) {
+        return scan(pattern, 10000);
+    }
+
+    /**
+     * 管道技术，提高性能
+     *
+     * @param type
+     * @param values
+     * @return
+     */
+    public List<Object> lRightPushPipeline(String type, Collection<String> values) {
+        List<Object> results = stringRedisTemplate.executePipelined(new RedisCallback<Object>() {
+            public Object doInRedis(RedisConnection connection) throws DataAccessException {
+                StringRedisConnection stringRedisConn = (StringRedisConnection) connection;
+                //集合转换数组
+                String[] strings = values.toArray(new String[values.size()]);
+                //直接批量发送
+                stringRedisConn.rPush(type, strings);
+                return null;
+            }
+        });
+        return results;
+    }
+
+    public List<Object> refreshWithPipeline(String future_key, String topic_key, Collection<String> values) {
+
+        List<Object> objects = stringRedisTemplate.executePipelined(new RedisCallback<Object>() {
+            @Nullable
+            @Override
+            public Object doInRedis(RedisConnection redisConnection) throws DataAccessException {
+                StringRedisConnection stringRedisConnection = (StringRedisConnection) redisConnection;
+                String[] strings = values.toArray(new String[0]);
+                stringRedisConnection.rPush(topic_key, strings);
+                stringRedisConnection.zRem(future_key, strings);
+                return null;
+            }
+        });
+        return objects;
     }
 }

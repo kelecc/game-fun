@@ -1,0 +1,15 @@
+server:
+  port: 50005
+spring:
+  application:
+    name: game-fun-schedule
+  profiles:
+    active: dev
+  cloud:
+    nacos:
+      server-addr: 127.0.0.1:8848
+      config:
+        file-extension: yaml
+        extension-configs[0]: datasource.yaml
+        extension-configs[1]: redis.yaml
+        extension-configs[2]: security.yaml
