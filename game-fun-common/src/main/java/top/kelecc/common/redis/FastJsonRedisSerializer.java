@@ -22,15 +22,11 @@ public class FastJsonRedisSerializer<T> implements RedisSerializer<T> {
 
     private Class<T> clazz;
 
-    static {
-        ParserConfig.getGlobalInstance().addAccept("top.kelecc.security.component.DaoUserDetails");
-        ParserConfig.getGlobalInstance().addAccept("top.kelecc.security.component.AppUserDetails");
-        ParserConfig.getGlobalInstance().addAccept("top.kelecc.security.component.WmUserDetails");
-    }
-
     public FastJsonRedisSerializer(Class<T> clazz) {
         super();
         this.clazz = clazz;
+        // 禁用 autoType 检查
+        ParserConfig.getGlobalInstance().setAutoTypeSupport(true);
     }
 
     @Override
