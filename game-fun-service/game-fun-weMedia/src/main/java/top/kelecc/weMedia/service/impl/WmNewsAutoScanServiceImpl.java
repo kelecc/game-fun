@@ -34,7 +34,6 @@ import java.util.stream.Collectors;
  */
 @Slf4j
 @Service
-@Transactional
 public class WmNewsAutoScanServiceImpl implements WmNewsAutoScanService {
 
     @Resource

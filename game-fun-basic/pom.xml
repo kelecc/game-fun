@@ -8,7 +8,7 @@
     </parent>
     <packaging>pom</packaging>
     <artifactId>game-fun-basic</artifactId>
-    <name>Archetype - game-fun-basic</name>
+    <name>game-fun-basic</name>
     <url>http://www.kelecc.top</url>
 
     <modules>

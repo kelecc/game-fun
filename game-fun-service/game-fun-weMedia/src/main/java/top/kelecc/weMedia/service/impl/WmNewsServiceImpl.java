@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import io.seata.spring.annotation.GlobalTransactional;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -26,6 +27,7 @@ import top.kelecc.weMedia.mapper.WmNewsMapper;
 import top.kelecc.weMedia.mapper.WmNewsMaterialMapper;
 import top.kelecc.weMedia.service.WmNewsAutoScanService;
 import top.kelecc.weMedia.service.WmNewsService;
+import top.kelecc.weMedia.service.WmNewsTaskService;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -36,7 +38,6 @@ import java.util.stream.Collectors;
 
 @Service
 @Slf4j
-@Transactional
 public class WmNewsServiceImpl extends ServiceImpl<WmNewsMapper, WmNews> implements WmNewsService {
     @Resource
     WmNewsMaterialMapper wmNewsMaterialMapper;
@@ -44,6 +45,9 @@ public class WmNewsServiceImpl extends ServiceImpl<WmNewsMapper, WmNews> impleme
     WmMaterialMapper wmMaterialMapper;
     @Resource
     WmNewsAutoScanService wmNewsAutoScanService;
+    @Resource
+    WmNewsTaskService wmNewsTaskService;
+
     @Override
     public ResponseResult findByWmNewsPageReqDto(WmNewsPageReqDto dto, Integer userId) {
         Page<WmNews> page = new Page<>(dto.getPage(), dto.getSize());
@@ -69,6 +73,7 @@ public class WmNewsServiceImpl extends ServiceImpl<WmNewsMapper, WmNews> impleme
     }
 
     @Override
+    @GlobalTransactional
     public ResponseResult submitNews(WmNewsDto dto, Integer userId) {
         WmNews wmNews = new WmNews();
         BeanUtils.copyProperties(dto, wmNews);
@@ -90,7 +95,13 @@ public class WmNewsServiceImpl extends ServiceImpl<WmNewsMapper, WmNews> impleme
         saveRelativeInfoForContent(materials, wmNews.getId());
         saveRelativeInfoForCover(dto, wmNews, materials);
         // 异步审核文章
-        wmNewsAutoScanService.autoScanWmNews(wmNews.getId());
+        if (wmNews.getPublishTime().getTime() <= System.currentTimeMillis()) {
+            log.info("文章id：{}，立即发布，直接审核", wmNews.getId());
+            wmNewsAutoScanService.autoScanWmNews(wmNews.getId());
+        } else {
+            log.info("文章id：{}，定时发布，等待定时任务审核", wmNews.getId());
+            wmNewsTaskService.addNewsToTask(wmNews.getId(), wmNews.getPublishTime());
+        }
         return ResponseResult.okResult(HttpCodeEnum.SUCCESS);
     }
 
@@ -100,7 +111,7 @@ public class WmNewsServiceImpl extends ServiceImpl<WmNewsMapper, WmNews> impleme
             if (materials.size() > 3) {
                 wmNews.setType(WemediaConstants.WM_NEWS_MANY_IMAGE);
                 images = materials.subList(0, 3);
-            } else if(materials.size() == 0) {
+            } else if (materials.size() == 0) {
                 wmNews.setType(WemediaConstants.WM_NEWS_NONE_IMAGE);
             } else {
                 wmNews.setType(WemediaConstants.WM_NEWS_SINGLE_IMAGE);

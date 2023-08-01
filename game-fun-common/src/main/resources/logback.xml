@@ -41,6 +41,7 @@
 
     <logger name="org.springframework.boot" level="info"/>
     <logger name="com.alibaba.nacos" level="info"/>
+    <logger name="io.seata" level="warn"/>
     <root level="info">
         <!--<appender-ref ref="ASYNC"/>-->
         <appender-ref ref="FILE"/>
