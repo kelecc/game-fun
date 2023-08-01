@@ -6,7 +6,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import top.kelecc.api.schedule.IScheduleClient;
 import top.kelecc.common.TaskTypeEnum;
 import top.kelecc.model.common.dtos.ResponseResult;
@@ -14,7 +13,9 @@ import top.kelecc.model.schedule.dto.Task;
 import top.kelecc.weMedia.service.WmNewsTaskService;
 
 import javax.annotation.Resource;
+import java.util.Base64;
 import java.util.Date;
+import java.util.Map;
 
 /**
  * @author 可乐
@@ -50,9 +51,10 @@ public class WmNewsTaskServiceImpl implements WmNewsTaskService {
     public void scanNewsByTask() {
         ResponseResult result = scheduleClient.poll(TaskTypeEnum.NEWS_SCAN_TIME.getTaskType(), TaskTypeEnum.NEWS_SCAN_TIME.getPriority());
         if (result.getCode().equals(200) && result.getData() != null) {
-            Task task = (Task) result.getData();
-            byte[] parameters = task.getParameters();
-            Integer id = JSON.parseObject(parameters, Integer.class);
+            Map map = (Map) result.getData();
+            String str = (String) map.get("parameters");
+            byte[] decode = Base64.getDecoder().decode(str);
+            Integer id = JSON.parseObject(decode, Integer.class);
             wmNewsAutoScanService.autoScanWmNews(id);
             log.info("定时审核文章id：{}", id);
         }
