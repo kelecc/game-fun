@@ -11,6 +11,7 @@ import top.kelecc.model.common.dtos.ResponseResult;
 import top.kelecc.model.common.enums.HttpCodeEnum;
 import top.kelecc.model.weMedia.dto.WmNewsDto;
 import top.kelecc.model.weMedia.dto.WmNewsPageReqDto;
+import top.kelecc.model.weMedia.dto.WmNewsUpOrDownDto;
 import top.kelecc.security.constants.SecurityMapKeyConstants;
 import top.kelecc.weMedia.service.WmNewsService;
 
@@ -46,5 +47,13 @@ public class WmNewsController {
     public ResponseResult saveNews(HttpServletRequest request, @RequestBody @Validated WmNewsDto dto){
         Integer userId = (Integer) request.getAttribute(SecurityMapKeyConstants.ID_KEY);
         return wmNewsService.submitNews(dto, userId);
+    }
+
+    @PostMapping("/down_or_up")
+    public ResponseResult downOrUp(@RequestBody @Validated WmNewsUpOrDownDto dto){
+        if (dto.getEnable() != 0 && dto.getEnable() != 1){
+            return ResponseResult.errorResult(HttpCodeEnum.PARAM_INVALID, "上下架参数不合法");
+        }
+        return wmNewsService.downOrUp(dto);
     }
 }

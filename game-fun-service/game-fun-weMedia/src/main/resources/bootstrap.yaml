@@ -14,3 +14,4 @@ spring:
         extension-configs[1]: redis.yaml
         extension-configs[2]: baiduAi.yaml
         extension-configs[3]: security.yaml
+        extension-configs[4]: rabbitMQ-local.yaml

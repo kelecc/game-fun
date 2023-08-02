@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import top.kelecc.model.common.dtos.ResponseResult;
 import top.kelecc.model.weMedia.dto.WmNewsDto;
 import top.kelecc.model.weMedia.dto.WmNewsPageReqDto;
+import top.kelecc.model.weMedia.dto.WmNewsUpOrDownDto;
 import top.kelecc.model.weMedia.pojo.WmNews;
 
 public interface WmNewsService extends IService<WmNews> {
@@ -24,4 +25,6 @@ public interface WmNewsService extends IService<WmNews> {
      * @return
      */
     ResponseResult submitNews(WmNewsDto dto, Integer userId);
+
+    ResponseResult downOrUp(WmNewsUpOrDownDto dto);
 }

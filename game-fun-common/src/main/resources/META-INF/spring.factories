@@ -3,4 +3,5 @@ org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
   top.kelecc.common.knife4j.Swagger2Configuration,\
   top.kelecc.common.redis.RedisCache,\
   top.kelecc.common.redis.RedisConfig,\
-  top.kelecc.common.redis.RedissonConfig
+  top.kelecc.common.redis.RedissonConfig,\
+  top.kelecc.common.rabbitMQ.RabbitMQConfig

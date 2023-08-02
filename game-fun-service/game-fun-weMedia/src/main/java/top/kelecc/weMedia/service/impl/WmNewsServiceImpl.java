@@ -9,9 +9,12 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import io.seata.spring.annotation.GlobalTransactional;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.amqp.rabbit.connection.CorrelationData;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import top.kelecc.common.constants.RabbitMQConstants;
 import top.kelecc.common.constants.WemediaConstants;
 import top.kelecc.common.exception.CustomException;
 import top.kelecc.model.common.dtos.PageResponseResult;
@@ -19,6 +22,7 @@ import top.kelecc.model.common.dtos.ResponseResult;
 import top.kelecc.model.common.enums.HttpCodeEnum;
 import top.kelecc.model.weMedia.dto.WmNewsDto;
 import top.kelecc.model.weMedia.dto.WmNewsPageReqDto;
+import top.kelecc.model.weMedia.dto.WmNewsUpOrDownDto;
 import top.kelecc.model.weMedia.pojo.WmMaterial;
 import top.kelecc.model.weMedia.pojo.WmNews;
 import top.kelecc.model.weMedia.pojo.WmNewsMaterial;
@@ -30,10 +34,7 @@ import top.kelecc.weMedia.service.WmNewsService;
 import top.kelecc.weMedia.service.WmNewsTaskService;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -47,6 +48,8 @@ public class WmNewsServiceImpl extends ServiceImpl<WmNewsMapper, WmNews> impleme
     WmNewsAutoScanService wmNewsAutoScanService;
     @Resource
     WmNewsTaskService wmNewsTaskService;
+    @Resource
+    RabbitTemplate rabbitTemplate;
 
     @Override
     public ResponseResult findByWmNewsPageReqDto(WmNewsPageReqDto dto, Integer userId) {
@@ -102,6 +105,44 @@ public class WmNewsServiceImpl extends ServiceImpl<WmNewsMapper, WmNews> impleme
             log.info("文章id：{}，定时发布，等待定时任务审核", wmNews.getId());
             wmNewsTaskService.addNewsToTask(wmNews.getId(), wmNews.getPublishTime());
         }
+        return ResponseResult.okResult(HttpCodeEnum.SUCCESS);
+    }
+
+    @Override
+    public ResponseResult downOrUp(WmNewsUpOrDownDto dto) {
+        // 1.查询文章
+        WmNews wmNews = getById(dto.getId());
+        if (wmNews == null) {
+            return ResponseResult.errorResult(HttpCodeEnum.DATA_NOT_EXIST, "文章不存在");
+        }
+        // 2.判断文章状态
+        if (!wmNews.getStatus().equals(WmNews.Status.PUBLISHED.getCode())) {
+            return ResponseResult.errorResult(HttpCodeEnum.PARAM_INVALID, "文章不是已发布状态，不能上下架");
+        }
+        // 3.修改文章状态
+        Short enable = wmNews.getEnable();
+        if (enable != null && enable >= 0 && enable <= 1) {
+            update(Wrappers.<WmNews>lambdaUpdate().set(WmNews::getEnable, dto.getEnable()).eq(WmNews::getId, dto.getId()));
+        }
+        // 4.发送消息到MQ,通知文章状态变更
+        HashMap<String, Object> map = new HashMap<>(2);
+        map.put("articleId", wmNews.getArticleId());
+        map.put("enable", dto.getEnable());
+        CorrelationData correlationData = new CorrelationData(UUID.randomUUID().toString());
+        correlationData.getFuture().addCallback(
+                result -> {
+                    if (result.isAck()) {
+                        // 3.1.ack，消息成功
+                        log.info("app文章上下架消息发送成功, ID:{}", correlationData.getId());
+                    } else {
+                        // 3.2.nack，消息失败
+                        log.error("app文章上下架消息发送失败, ID:{}, 原因{}", correlationData.getId(), result.getReason());
+                    }
+                },
+                ex -> {
+                    log.error("app文章上下架消息发送发送异常, ID:{}, 原因{}", correlationData.getId(), ex.getMessage());
+                });
+        rabbitTemplate.convertAndSend(RabbitMQConstants.QUEUE_WEMEDIA_UP_OR_DOWN_ARTICLE, map, correlationData);
         return ResponseResult.okResult(HttpCodeEnum.SUCCESS);
     }
 
