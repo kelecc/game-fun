@@ -3,28 +3,21 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>top.kelecc</groupId>
-        <artifactId>game-fun</artifactId>
+        <artifactId>game-fun-service</artifactId>
         <version>1.0</version>
     </parent>
 
-    <artifactId>game-fun-test</artifactId>
-    <packaging>pom</packaging>
+    <groupId>top.kelecc.schedule</groupId>
+    <artifactId>game-fun-schedule</artifactId>
+    <packaging>jar</packaging>
 
-    <name>game-fun-test</name>
-    <url>http://www.kelecc.top</url>
-    <modules>
-        <module>minio-demo</module>
-        <module>es-init</module>
-    </modules>
+    <name>game-fun-schedule</name>
+    <url>http://maven.apache.org</url>
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
 </project>
