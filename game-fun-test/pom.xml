@@ -14,6 +14,7 @@
     <url>http://www.kelecc.top</url>
     <modules>
         <module>minio-demo</module>
+        <module>es-init</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
