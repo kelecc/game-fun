@@ -21,8 +21,6 @@
         <module>game-fun-test</module>
         <module>game-fun-basic</module>
         <module>game-fun-baiduAi</module>
-        <module>game-fun-schedule</module>
-
     </modules>
 
     <!-- 继承Spring boot工程 -->
@@ -252,48 +250,16 @@
                 <artifactId>fastdfs-client</artifactId>
                 <version>${fastdfs.version}</version>
             </dependency>
-            <dependency>
-                <groupId>com.aliyun</groupId>
-                <artifactId>aliyun-java-sdk-core</artifactId>
-                <version>${ali.core.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.aliyun</groupId>
-                <artifactId>aliyun-java-sdk-green</artifactId>
-                <version>${ali.green.version}</version>
-            </dependency>
             <!-- junit -->
             <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
                 <version>${junit.version}</version>
             </dependency>
-            <!-- kafkfa -->
-            <dependency>
-                <groupId>org.springframework.kafka</groupId>
-                <artifactId>spring-kafka</artifactId>
-                <version>${kafka.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.kafka</groupId>
-                <artifactId>kafka-streams</artifactId>
-                <version>${kafka.client.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <artifactId>connect-json</artifactId>
-                        <groupId>org.apache.kafka</groupId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
             <dependency>
                 <groupId>org.redisson</groupId>
                 <artifactId>redisson</artifactId>
                 <version>${redisson.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.kafka</groupId>
-                <artifactId>kafka-clients</artifactId>
-                <version>${kafka.client.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.github.xiaoymin</groupId>
